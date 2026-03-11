@@ -3,12 +3,13 @@ const express = require("express");
 const leadRouter = express.Router();
 const leadController = require("../controllers/leadCtrl");
 const { protect } = require("../middleware/authMiddleware");
+const webhookAuth = require("../middleware/webhookAuth");
 
 //! Capture new lead (auto-assign to agent)
 leadRouter.post("/", protect, leadController.createLead);
 
 //! webhook router for google form
-leadRouter.post("/webhook", leadController.createLead)
+leadRouter.post("/webhook", webhookAuth, leadController.createLead)
 
 //! Agent updates pipeline stage
 leadRouter.put("/:id/stage", protect, leadController.updateStage);
