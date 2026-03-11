@@ -7,6 +7,9 @@ const { protect } = require("../middleware/authMiddleware");
 //! Capture new lead (auto-assign to agent)
 leadRouter.post("/", protect, leadController.createLead);
 
+//! webhook router for google form
+leadRouter.post("/webhook", leadController.createLead)
+
 //! Agent updates pipeline stage
 leadRouter.put("/:id/stage", protect, leadController.updateStage);
 
@@ -15,5 +18,6 @@ leadRouter.put("/:id/visit", protect, leadController.scheduleVisit);
 
 //! Role-based dashboard (admin sees all, agent sees only theirs)
 leadRouter.get("/dashboard", protect, leadController.dashboard);
+
 
 module.exports = leadRouter;
