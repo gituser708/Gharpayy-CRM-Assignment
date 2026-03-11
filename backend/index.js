@@ -12,30 +12,43 @@ require('./cron/reminders');
 
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials:true
-}));
+//! ✅ CORS setup: allow React dev server and credentials
+app.use(
+  cors({
+    origin: 'http://localhost:5173', //! frontend origin
+    credentials: true, //! allow cookies
+  }),
+);
+
 app.use(express.json());
-app.use(session({
+
+//! ✅ Session setup: secure cookies for cross-origin
+app.use(
+  session({
     secret: 'crmsecret',
     resave: false,
-    saveUninitialized: false
-}));
+    saveUninitialized: false,
+    cookie: {
+      secure: true, //! required on HTTPS (Render)
+      sameSite: 'none', //! allow cross-origin cookies
+    },
+  }),
+);
 
-//! routes
+//! ✅ Routes
 app.use('/api/auth', authRouter);
 app.use('/api/leads', leadRouter);
 app.use('/api/admin', adminRouter);
 
-
 const PORT = process.env.PORT || 5000;
 
-Promise.all([connectDB(), createAdmin()]).then(() => {
+//! Connect DB and create default admin before starting server
+Promise.all([connectDB(), createAdmin()])
+  .then(() => {
     app.listen(PORT, () => {
-        console.log(`Server is running on PORT: ${PORT}`);
+      console.log(`Server is running on PORT: ${PORT}`);
     });
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.error(error);
-});
-
+  });
