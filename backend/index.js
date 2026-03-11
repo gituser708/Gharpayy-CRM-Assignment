@@ -28,10 +28,6 @@ app.use(
     secret: 'crmsecret',
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: true, //! required on HTTPS (Render)
-      sameSite: 'none', //! allow cross-origin cookies
-    },
   }),
 );
 

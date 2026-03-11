@@ -7,7 +7,7 @@ export default function LeadsTable() {
   const [leads, setLeads] = useState([]);
 
   useEffect(() => {
-    api.get('/leads').then((res) => setLeads(res.data));
+    api.get('/leads/dashboard').then((res) => setLeads(res.data));
   }, []);
 
   return (
