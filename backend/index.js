@@ -19,10 +19,6 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use('/', (req, res) => {
-    res.send('Hello Express')
-})
-
 //! routes
 app.use('/api/auth', authRouter);
 app.use('/api/leads', leadRouter);
