@@ -10,14 +10,20 @@ export default function AgentTable() {
   }, []);
 
   const deleteAgent = async (id) => {
-    await api.delete(`/admin/agents/${id}`);
-    setAgents(agents.filter((a) => a._id !== id));
+    try {
+      await api.delete(`/admin/agents/${id}`);
+      setAgents(agents.filter((a) => a._id !== id));
+      alert('Agent deleted');
+    } catch (err) {
+      alert('Error deleting agent');
+      console.error(err);
+    }
   };
 
   return (
-    <Card>
+    <Card className='shadow-sm'>
       <Card.Body>
-        <h5>Agents</h5>
+        <h5 className='mb-3'>Agents</h5>
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -27,20 +33,28 @@ export default function AgentTable() {
             </tr>
           </thead>
           <tbody>
-            {agents.map((agent) => (
-              <tr key={agent._id}>
-                <td>{agent.name}</td>
-                <td>{agent.email}</td>
-                <td>
-                  <Button
-                    size='sm'
-                    variant='danger'
-                    onClick={() => deleteAgent(agent._id)}>
-                    Delete
-                  </Button>
+            {agents.length > 0 ? (
+              agents.map((agent) => (
+                <tr key={agent._id}>
+                  <td>{agent.name}</td>
+                  <td>{agent.email}</td>
+                  <td>
+                    <Button
+                      size='sm'
+                      variant='danger'
+                      onClick={() => deleteAgent(agent._id)}>
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan='3' className='text-center'>
+                  No agents available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </Table>
       </Card.Body>

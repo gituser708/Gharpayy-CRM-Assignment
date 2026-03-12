@@ -4,14 +4,14 @@ import api from '../api';
 export default function LeadActions({ lead }) {
   const updateStage = (status) => {
     api
-      .post(`/leads/${lead._id}/stage`, { status })
+      .put(`/leads/${lead._id}/stage`, { status })
       .then(() => alert(`Stage updated to ${status}`));
   };
 
   const scheduleVisit = () => {
     const visit = { property: 'Demo Property', date: new Date(), outcome: '' };
     api
-      .post(`/leads/${lead._id}/visit`, visit)
+      .put(`/leads/${lead._id}/visit`, visit)
       .then(() => alert('Visit scheduled'));
   };
 

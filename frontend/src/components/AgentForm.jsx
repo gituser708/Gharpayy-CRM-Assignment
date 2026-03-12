@@ -9,23 +9,29 @@ export default function AgentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post('/admin/agents', { name, email, password });
-    alert('Agent created');
-    setName('');
-    setEmail('');
-    setPassword('');
+    try {
+      await api.post('/admin/agents', { name, email, password });
+      alert('Agent created successfully');
+      setName('');
+      setEmail('');
+      setPassword('');
+    } catch (err) {
+      alert('Error creating agent');
+      console.error(err);
+    }
   };
 
   return (
-    <Card className='mb-3'>
+    <Card className='mb-3 shadow-sm'>
       <Card.Body>
-        <h5>Create Agent</h5>
+        <h5 className='mb-3'>Create Agent</h5>
         <Form onSubmit={handleSubmit}>
           <Form.Group className='mb-2'>
             <Form.Label>Name</Form.Label>
             <Form.Control
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder='Enter agent name'
             />
           </Form.Group>
           <Form.Group className='mb-2'>
@@ -34,6 +40,7 @@ export default function AgentForm() {
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder='Enter agent email'
             />
           </Form.Group>
           <Form.Group className='mb-2'>
@@ -42,6 +49,7 @@ export default function AgentForm() {
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder='Enter password'
             />
           </Form.Group>
           <Button type='submit' variant='primary'>

@@ -7,7 +7,6 @@ export default function DashboardCards() {
     totalLeads: 0,
     visits: 0,
     bookings: 0,
-    pipelineCounts: [],
   });
 
   useEffect(() => {
@@ -17,18 +16,24 @@ export default function DashboardCards() {
   return (
     <Row className='mb-4'>
       <Col>
-        <Card>
-          <Card.Body>Total Leads: {stats.totalLeads}</Card.Body>
+        <Card className='shadow-sm'>
+          <Card.Body className='text-center fw-bold'>
+            Total Leads: {stats.totalLeads}
+          </Card.Body>
         </Card>
       </Col>
       <Col>
-        <Card>
-          <Card.Body>Visits Scheduled: {stats.visits}</Card.Body>
+        <Card className='shadow-sm'>
+          <Card.Body className='text-center fw-bold'>
+            Visits Scheduled: {stats.visits}
+          </Card.Body>
         </Card>
       </Col>
       <Col>
-        <Card>
-          <Card.Body>Bookings: {stats.bookings}</Card.Body>
+        <Card className='shadow-sm'>
+          <Card.Body className='text-center fw-bold'>
+            Bookings: {stats.bookings}
+          </Card.Body>
         </Card>
       </Col>
     </Row>

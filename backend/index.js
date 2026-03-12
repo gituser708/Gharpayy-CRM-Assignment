@@ -12,41 +12,42 @@ require('./cron/reminders');
 
 const app = express();
 
-//! ✅ CORS setup: allow React dev server and credentials
+// ✅ CORS setup: allow React dev server and credentials
 app.use(
   cors({
-    origin: 'http://localhost:5173', //! frontend origin
-    credentials: true, //! allow cookies
+    origin: 'http://localhost:5173', // frontend origin
+    credentials: true, // allow cookies
   }),
 );
 
 app.use(express.json());
 
-app.set("trust proxy", 1);
+// ✅ Trust proxy (needed for secure cookies in prod)
+app.set('trust proxy', 1);
 
-//! ✅ Session setup: environment-aware cookie flags
+// ✅ Session setup: environment-aware cookie flags
 const isProd = process.env.NODE_ENV === 'production';
 
 app.use(
   session({
     secret: 'crmsecret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, // ✅ force cookie creation locally
     cookie: {
-      secure: isProd, //! true on Render (HTTPS), false locally
+      secure: isProd, // true on Render (HTTPS), false locally
       sameSite: isProd ? 'none' : 'lax',
     },
   }),
 );
 
-//! ✅ Routes
+// ✅ Routes
 app.use('/api/auth', authRouter);
 app.use('/api/leads', leadRouter);
 app.use('/api/admin', adminRouter);
 
 const PORT = process.env.PORT || 5000;
 
-//! Connect DB and create default admin before starting server
+// ✅ Connect DB and create default admin before starting server
 Promise.all([connectDB(), createAdmin()])
   .then(() => {
     app.listen(PORT, () => {
